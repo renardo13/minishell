@@ -2,8 +2,8 @@
 
 The paring is here to help at the maximum the person who will do the executing part, it will followed the part after the tokenization, and syntax error will be treated at this moment.
 
-# BONUS
-> Paremthesis
+#### BONUS
+> Parenthesis
 
 The tricks to handle parenthesis is very simple. 
 If you tokenize very precisely all the elements of your command line in a linked list. you can just make a counter of parenthesis regarding what will follow your parenthesis.
