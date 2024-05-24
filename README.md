@@ -11,5 +11,8 @@ When you catch a valid openbracket, counter++, when you catch a clode bracket, c
 Open bracket should always be followed by a WORD, or another open bracket, or an operator like an AND or OR and a REDIRECTION, the next node can be NULL also.
 Close bracket should aleays be followed by a REDIRECTION OUT, an AND or OR or a closed bracket.
 
-Bash makes a distinction between arythmetique expression which is define by an expression alone, like a word alone between parenthesis and a command. An expression can also be (a + b) or (a * b), and so on.. 
-In this particular context bash accept a lots of bracket like (((( a + b)))) or (((c))). This with commands is always report as a bad expression syntaxe.
+Bash makes a distinction between arythmetique expression which is define by an expression alone. This can be a word alone between at minimum two parenthesis and a command. An expression can also be ((a + b)) or ((a * b)), and so on.. 
+In this particular context bash accept a lots of bracket like (((( a + b)))) or (((c))). This with a commands is always report as an error of bad expression syntaxe.
+
+Something like that is ok ((((a))) && (((b))))
+But something like this is not ((((echo a))) && (((echo b))))
