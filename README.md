@@ -16,3 +16,13 @@ In this particular context bash accept a lots of bracket like (((( a + b)))) or 
 
 Something like that is ok ((((a))) && (((b))))
 But something like this is not ((((echo a))) && (((echo b))))
+
+##### Wildcards
+
+####### Tricky cases with the wildcard :
+- If there is no characteres between the stars, AND that the char in question doesn't appears anymore, it is not valid.
+--> "m*a*.c" doesn 't become "main.c" m*
+--> "s*t*.h" become "struct.h" because it is the last "t" encountered takes into account.
+- The begenning and the end of the wildcard should automatically fit with the start and the end of the dir_name.
+--> "m*.c" become "main.c"
+--> "a*.c" doesn 't become "main.c"
