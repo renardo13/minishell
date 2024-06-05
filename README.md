@@ -20,6 +20,7 @@ But something like this is not ((((echo a))) && (((echo b))))
 ##### --- Wildcards ---
 
 ###### Tricky cases with the wildcard :
+The way that bash executes the expansion of the wildcards appears to be not lineary.
 - If there is no characteres between the stars, AND that the char in question doesn't appears anymore, it is not valid.
   
 --> "m*a*.c" doesn 't become "main.c" m*
