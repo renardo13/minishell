@@ -32,3 +32,7 @@ The way that bash executes the expansion of the wildcards appears to be not line
 --> "m*.c" become "main.c"
 
 --> "a*.c" doesn 't become "main.c"
+
+- If there is any amount of stars between chars, it should be treated like if there was one star.
+
+--> "m******.c" become "main.c"
