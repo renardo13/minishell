@@ -17,6 +17,9 @@ In this particular context bash accept a lots of bracket like (((( a + b)))) or 
 Something like that is ok ((((a))) && (((b))))
 But something like this is not ((((echo a))) && (((echo b))))
 
+(Bash return generaly the unexpected token which is next the error in queston, the one which appears before).
+??? So it check the error only regarding the NEXT tokeen ?????
+
 ##### --- Wildcards ---
 
 ###### Tricky cases with the wildcard :
