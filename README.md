@@ -77,32 +77,28 @@ Personaly, I had a lots of difficulties to deal with informations that I wanted 
 
 I though to saves this differents information by encoding it withs digits(code) in differents strings.
 
-To beggin, I had troubles to cop with spaces in the prompts because I use split function to save the commands with the options, something that you don't have to do necessarily, again it depends of your proper implementation of minishell. to deal with spaces that I had to keep and spaces that I had to remove after doing my split I made a string to keep the information with digits of differents values, in order to restore after the spaces that I had before. In parallel I put a random charactere that the split function will ignore if it is a spaces that I had to keep in the future. I did the same encodings systems for the expands, with 0 if I do not, and 1 if I had to replace the name by the value.
+To beggin, I had troubles to cop with spaces in the prompts because I use split function to save the commands with the options, something that you don't have to do necessarily, again it depends of your proper implementation of minishell. To deal with spaces that I had to keep and spaces that I had to remove to do my split I made a string to keep the information with digits of differents values, in order to restore after the spaces that I had before. In parallel I put a random charactere that the split function will "ignore" if it is a spaces that I had to keep in the future. I did the same encodings systems for the expands, with 0 if I do not, and 1 if I had to replace the name by the value.
 To be more clear I save a sequence of 0 and 1 to know in the future if I have to expand or not as I already say before I had to separate the expand of the parsing.
 You can put all this encoded informations in a structure deserve to that for instance.
-There are other way to do so, but I didn't find better way to keep informations with things that I had to remove during the parsing and informations to have during the differents phases of the execution.
+There are other way to do so, but I didn't find better way to keep informations that I had to remove during the parsing and but keep accessible under another form during the differents phases of the execution.
 
-Handling error cases if quite difficults in bash. Especially to display the specific token. You can treat the syntax errors by analizing what token is following, it works good when you have to considarate errors in a relative ways. If you have to look at all the prompt in a general way maybe you can save the error token in a string in order to keep it and continue to analizing the context.
+##### Syntax error
 
-The more important for this project is the organization of the code. You should made the simplest and portables function that you can remove or add easily. You have to take into account lots of thing from the start even if you cannot know everything before starting.
+It can be nasty to display the specific error token. You can treat the syntax errors by analizing what token is following the token pointed, it works well when you have to considerate errors in a relative ways. If you have to look at all the token in your linked list in a general way maybe you can save the error token in a string in order to keep it and continue to analizing the context, maybe this kind of error are more important compared to others. Like odd quote for exemple, or not closed parenthesis.
 
+The more important for this project is the organization of the code. You should made the simplest and portables function that you can remove or add easily. You have to take into account lots of thing from the start.
 
-## tokenizations 
+##### tokenizations 
 
-You should tokenize and give a very precise label to all in your principale linked list. I used an enum structure to categorise them.
+You should tokenize and give a very precise label to all in your elements in your linked list. I used an enum structure to categorise them, it is simply digits aimed to identify a token. I choose to determine 2 differents epressions that has to be treated separately.
 
 - symbols -> |, ||, && 
 
-- sequence of characteres between quotes or simple word. "Hello my friend" "echo" "lol" that will be always a WORD enum.
+- sequence of characteres between quotes or simple word. "Hello my friend" "echo" "lol" will always be a WORD enum.
 Cmd[0] will always be the command.
 
-All this differents token can have a redirection. >,>,>>,<<
-That I tokenize also with enum.
+All this differents token can have a redirection. >,>,>>,<<. So I decided to make a linked list inside my principal linked list. A pointer of redir_struct inside my node cmd_struct.
+I tokenize the redir also with enum structure. Even node without anything(commands, symbols,..) can have a redirection.
+It is always the first word after a redirection that is the infile or the outfile. (You cannot have two or more redirections following each others.)
 
-By using enum structure for instance.
-To tokenize redirection I put a pointers of redirection structure inside my main node. 
-Every node can have a redirection.
-Even node wothout anything(commands, symbols,..) can have a redirection.
-It is always the first word after a redirection that is the infile. (You cannot have two or more redirections following each others.)
-
-I only made a while loop to look for the symbols and tokenize them while treating all the characteres or sequences of characteres inbetween. If the sequence of word is betweek quote. I deserve a specific threatment to the string before puting a WORD enum label on it.
+In conclusion, I only made a while loop to look for the symbols and tokenize them while treating all the characteres or sequences of characteres inbetween. If the sequence of word is between quote, I treated it like a bloc and I deserve a specific threatment to the string before puting a WORD enum label on it.
