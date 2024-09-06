@@ -34,36 +34,41 @@ The way that bash executes the expansion of the wildcards appears to be not line
 
 --> "m******.c" become "main.c"
 
+Be careful if no files correspond to the wildcards you should just give back the name as it was written in the prompt :
+
+Echo *.c *llo 
+~ main.c llo
+
 ##### --- Expansion ---
 
-It is very important to isolate the fonction that expand the variables to separate it from the parsing part. Replace the variables - present in the environment variables - by their values.
-More important when you do the bonus part. 
-For instance, something like 
+###### The expansion means replacing the variables (present in the environment variables) by their values.
+
+It is very important to separate the fonction that expand the variables from the parsing part. This is crucial when you do the bonus part.
+For instance, something like :
 ~ "echo $USER && export USER=yop && echo $USER" 
 Should expand as follow :
-~ "Nameoftheuser
+~ "Bernard
 Yop"
 
-You have to make the expand systematically when you call the execution of the builtins. (And in the heredoc to).
+You have to make the expand systematically when you call the execution of the builtins. (And in the heredoc to sometimes, when there is no quote in the name of the heredoc, the EOF).
 
+##### --- Signals ---
+
+You can make the signals at hte end of your minishell since you need to test it when your minishell is working properly to see if it has the right effect.
 The global variable in this particular minishell project of 42 should be used to put a value that will be interpretated by a function and save the return code of the action when a signal is received.
 
-We can say that there are 3 differents mode fir the signal.
+There are 3 differents "mode" for the signal :
 
-- A signal receive in the prompt mode when no commands are being executed.
+- a signal receive in the prompt mode when no commands are being executed.
 - a signal received in a "stopping" command. Like cat. 
 - a signal received in a heredoc.
 
 --> A same signal can have 3 differents actions in minishell.
 
-I advice you to threat the redirection while treating the builtins that display something the screen (in a fd). 
+I advice you to threat the redirection while treating the builtins that display something the screen STDOUTFILENO or in an other fd. 
 By for example adding a fd parameter in your function. To echo or env or to export in the good file descriptors.
 
 Ajouter au wilcards.
-Be careful if none correspondante files to the wildcards is found. You should just considarate the name as it was writen in the prompt :
-
-Echo *.c *llo 
-~ main.c llo
 
 ###general structure of the code
 
