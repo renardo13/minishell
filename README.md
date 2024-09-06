@@ -37,7 +37,7 @@ The way Bash executes wildcard expansion does not seem linear.
   - `"m******.c"` becomes `main.c`
 
 Be careful: if no files match the wildcards, you should just return the name as it was written in the prompt. For example:
-- `echo *.c *llo` results in: `main.c llo`
+  - `echo *.c *llo` results in: `main.c *llo`
 
 #### Expansion
 
