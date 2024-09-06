@@ -14,7 +14,7 @@ I thought of saving this information using digits (codes) in different strings.
 
 At first, I had trouble dealing with spaces in the prompt because I used a split function to save the commands with options, which is something you don't necessarily need to do. Again, it depends on your implementation of minishell. To handle spaces that needed to be kept and spaces that needed to be removed for splitting, I created a string to store this information using digits of different values, allowing me to restore the spaces afterward. In parallel, I inserted a random character that the split function would "ignore" if it was a space that needed to be kept. I applied the same encoding system for expansions, using `0` for no expansion and `1` for replacing the name with the value.
 
-To clarify, I stored a sequence of `0`s and `1`s to indicate whether I needed to expand or not. As I mentioned earlier, I separated expansion from parsing. You can store all this encoded information in a structure dedicated to this purpose. There are other ways to do this, but I didn’t find a better way to retain the information I had to remove during parsing while keeping it accessible in a different form during execution.
+To clarify, I stored a sequence of `0` and `1` to indicate whether I needed to expand or not. As I mentioned earlier, I separated expansion from parsing. You can store all this encoded information in a structure dedicated to this purpose. There are other ways to do this, but I didn’t find a better way to retain the information I had to remove during parsing while keeping it accessible in a different form during execution.
 
 ## Parsing
 
