@@ -1,41 +1,42 @@
+There is a lot's of way to do this projetc. If we keep the two main phases of the project the parsing, that include the lexer and the tokenization. Basically slice the input in tokens and give it specific label. And the second phase, the execution. It is possible to make a lots of thing in the parsing. To do less at the moment of the execution, or the countrary. It depend the way you organize you. The best way I think is to do at the maximum the things at the time T. The removing of the quote, the expansion, the redirections, etc. 
+the thing is, less you want to keep information in advance, less you'll have work to do. I'll develop what I'm talking about precisely after. Personaly, I wasn't enought informed about the subject before I get in. So I did a lot's of manipulation in the parsing (the part I did), but it was not necessarily. I'll explained what I did anyway.
+
 ## The parsing
 
-The paring is here to help at the maximum the person who will do the executing part, it will followed the part after the tokenization, and syntax error will be treated at this moment.
+The parsing is here to help at the maximum the person who will do the execution part, and all the syntax error will be treated at this moment.
 
 #### BONUS
 ##### --- Parenthesis ---
 
 The tricks to handle parenthesis is very simple. 
-If you tokenize very precisely all the elements of your command line in a linked list. you can just make a counter of parenthesis regarding what will follow your parenthesis.
-When you catch a valid openbracket, counter++, when you catch a clode bracket, counter--, and so on.
-Open bracket should always be followed by a WORD, or another open bracket, or an operator like an AND or OR and a REDIRECTION, the next node can be NULL also.
-Close bracket should aleays be followed by a REDIRECTION OUT, an AND or OR or a closed bracket.
+If you tokenize very precisely all the elements of your command line in a linked list. you can just make a counter of parenthesis that will increase or decrease only if the parenthesis is valid. The means regarding what token follow it.
+When you catch a valid openbracket, counter++, when you catch a valid close bracket, counter--, and so on.
+Open bracket should always be followed by a WORD, or an operator like an AND or OR and a REDIRECTION.
+Close bracket should aleays be followed by a REDIRECTION OUT, an AND or OR or a closed bracket, the next node can be NULL also.
 
 Bash makes a distinction between arythmetique expression which is define by an expression alone. This can be a word alone between at minimum two parenthesis and a command. An expression can also be ((a + b)) or ((a * b)), and so on.. 
-In this particular context bash accept a lots of bracket like (((( a + b)))) or (((c))). This with a commands is always report as an error of bad expression syntaxe.
-
+In this particular context bash accept a lots of bracket like ((((a + b)))) or (((c))). This with a commands for instance is always report as an error of "bad expression syntaxe".
 Something like that is ok ((((a))) && (((b))))
 But something like this is not ((((echo a))) && (((echo b))))
-
-(Bash return generaly the unexpected token which is next the error in queston, the one which appears before).
-??? So it check the error only regarding the NEXT tokeen ?????
 
 ##### --- Wildcards ---
 
 ###### Tricky cases with the wildcard :
 The way that bash executes the expansion of the wildcards appears to be not lineary.
 
-- The begenning and the end of the wildcard should automatically fit with the start and the end of the dir_name.
+- The first letter and the last letter of the wildcards should necessarily fit with the first letter and the last letter of the name of the directorie(s) that has to be printed :
 
 --> "m*.c" become "main.c"
 
 --> "a*.c" doesn 't become "main.c"
 
-- If there is any amount of stars between chars, it should be treated like if there was one star.
+- If there is any amount of stars between characters, it should be treated like if there was one star :
 
 --> "m******.c" become "main.c"
 
-It is very important to isolate the fonction that expand the variables to separate it from the parsing part. (Replace the variables by their values according to the context).
+##### --- Expansion ---
+
+It is very important to isolate the fonction that expand the variables to separate it from the parsing part. Replace the variables - present in the environment variables - by their values.
 More important when you do the bonus part. 
 For instance, something like 
 ~ "echo $USER && export USER=yop && echo $USER" 
