@@ -1,62 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:09:11 by melmarti          #+#    #+#             */
+/*   Updated: 2024/08/02 14:33:59 by renard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int			g_signal = 0;
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: renard <renard@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/07/29 12:09:11 by melmarti          #+#    #+#             */
+/*   Updated: 2024/08/02 14:30:08 by renard           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int	ft_tokenize(char *buffer, t_cmd **lst)
+#include "minishell.h"
+
+static void	ft_launch_exec(t_save_struct *tstruct)
 {
-	int	(*ft_tab[10])(t_cmd *);
+	char	**envp;
 
-	t_cmd	*curr;
-	ft_create_token_lst(buffer, lst);
-	ft_init_ft_tab(ft_tab);
-	curr = *lst;
-	while (curr)
-	{
-		ft_tab[curr->type](curr);
-		curr = curr->next;
-	}
-	return (0);
-}
-
-void	ft_handler_signals(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ft_putchar_fd('\n', 2);
-		g_signal = 1;
-	}
+	envp = ft_envp_to_char(tstruct);
+	ft_exec(tstruct, &envp);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*buffer;
-	t_cmd	*lst;
+	char			*buffer;
+	t_envp			*env;
+	t_save_struct	*tstruct;
 
-	// t_envp	*envp_lst;
 	(void)av;
 	(void)ac;
-	(void)envp;
-	buffer = NULL;
-	lst = NULL;
-	// envp_lst = NULL;
-	// envp_lst = ft_save_envp(envp, &envp_lst);
-	// signal(SIGINT, ft_handler_signals);
+	env = NULL;
+	ft_save_envp(envp, &env);
 	while (1)
 	{
-		buffer = readline(CYAN "MINISHELL~ " RESET);
+		ft_signal(1);
+		tstruct = malloc(sizeof(t_save_struct));
+		if (!tstruct)
+			return (ft_free_envp_lst(env, NULL), 0);
+		ft_memset(tstruct, 0, sizeof(*tstruct));
+		buffer = readline("minishell : ");
 		if (!buffer)
-		{
-			free(buffer);
-			// ft_free_envp_lst(envp_lst);
-			return (0);
-		}
-		ft_tokenize(buffer, &lst);
-		// ft_get_path(&lst);
-		// ft_exec_cmd();
-		// ft_print_lst(lst);
-		ft_free_lst(lst);
-		lst = NULL;
-		free(buffer);
-		buffer = NULL;
+			return (ft_free_envp_lst(tstruct->envp, &env), free(buffer),
+				ft_all_free(tstruct, 0, NULL, NULL), 0);
+		add_history(buffer);
+		if (ft_tokenize(buffer, tstruct, &env) != -1)
+			ft_launch_exec(tstruct);
+		ft_all_free(tstruct, 1, &buffer, &env);
 	}
+	return (0);
 }
