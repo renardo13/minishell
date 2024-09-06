@@ -36,7 +36,7 @@ The way Bash executes wildcard expansion does not seem linear.
 - If there is any number of asterisks between characters, it should be treated as if there was only one asterisk:
   - `"m******.c"` becomes `main.c`
 
-Be careful: if no files match the wildcards, you should just return the name as it was written in the prompt. For example:
+- Be careful: if no files match the wildcards, you should just return the name as it was written in the prompt. For example:
   - `echo *.c *llo` results in: `main.c *llo`
 
 #### Expansion
