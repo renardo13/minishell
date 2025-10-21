@@ -1,5 +1,9 @@
 # Project Overview
 
+Minishell is a project developed in C.
+Its goal is to recreate a simplified version of the Bash shell, capable of executing commands, managing multiple pipes, redirections, environment variables, and signal handling.
+The project deepens understanding of process management, system calls, parsing, and inter-process communication in Unix environments.
+
 There are lots of ways to do this project. If we keep the two main phases of the project: the parsing, which includes the lexer and the tokenization (basically slicing the input into tokens and giving them specific labels), and the second phase: the execution. It is possible to do lots of things in the parsing to reduce the work at the time of execution, or the contrary. It depends on how you organize it. The best way, I think, is to do as much as possible at the time T: removing quotes, handling expansions, redirections, etc.
 
 The thing is, the less information you keep in advance, the less work you'll have to do. I'll explain exactly what I mean later. Personally, I wasn't informed enough about the subject before I started, so I did a lot of manipulation in the parsing (the part I did), but it wasn't necessarily the best approach. I'll explain what I did anyway.
